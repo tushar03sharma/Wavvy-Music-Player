@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wavvy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="app">
+  <div class="main">
+
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-mark">🎵</div>
+        <span class="logo-text">Wavvy</span>
+      </div>
+
+      <div class="search-wrap">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search any song…" autocomplete="off" />
+          <button onclick="doSearch()">Search</button>
+        </div>
+      </div>
+
+      <div class="results-area" id="resultsArea">
+        <div class="empty-hint">
+          <span class="big">🎧</span>
+          Search for any song.<br>Powered by Node.js + yt-dlp.
+        </div>
+      </div>
+    </aside>
+
+    <div class="content">
+      <div class="content-header">
+        <div class="now-art-ph spinning" id="nowArtWrap">🎵</div>
+        <div class="now-info">
+          <div class="now-label"><span class="status-dot"></span>Now Playing</div>
+          <div class="now-title" id="nowTitle">Nothing playing yet</div>
+          <div class="now-artist" id="nowArtist">Search a song to get started →</div>
+        </div>
+      </div>
+
+      <div class="queue-section">
+        <div class="q-header">
+          <span>Queue (<span id="qCount">0</span>)</span>
+          <button class="clear-btn" onclick="clearQueue()">Clear all</button>
+        </div>
+        <div id="queueList">
+          <div class="q-empty">Your queue is empty. Add songs from search.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="player-bar">
+    <div class="pb-left">
+      <div class="pb-thumb-ph" id="pbThumbWrap">🎵</div>
+      <div class="pb-meta">
+        <div class="pb-title" id="pbTitle">—</div>
+        <div class="pb-artist" id="pbArtist">—</div>
+      </div>
+    </div>
+
+    <div class="pb-center">
+      <div class="ctrl-row">
+        <button class="ctrl" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle">⇄</button>
+        <button class="ctrl" onclick="prevTrack()" title="Previous">⏮</button>
+        <button class="ctrl play" onclick="togglePlay()" id="playBtn">▶</button>
+        <button class="ctrl" onclick="nextTrack()" title="Next">⏭</button>
+        <button class="ctrl" id="repeatBtn" onclick="toggleRepeat()" title="Repeat">↻</button>
+      </div>
+      <div class="prog-row">
+        <span class="tl" id="tEl">0:00</span>
+        <input type="range" id="progBar" min="0" max="100" value="0" step="0.1" oninput="seekTo(this.value)" />
+        <span class="tl r" id="tDur">0:00</span>
+      </div>
+    </div>
+
+    <div class="pb-right">
+      <div class="vol-row">
+        <span>🔈</span>
+        <input type="range" id="volBar" min="0" max="1" step="0.01" value="0.8" oninput="setVol(this.value)" />
+        <span>🔊</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<audio id="audioEl"></audio>
+
+<script src="app.js"></script>
+</body>
+</html>
