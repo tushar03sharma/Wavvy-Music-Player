@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+.DS_Store
+uploads/*
+!uploads/.gitkeep
+dist/
+build/
+.vercel/
+.next/
+*.log
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

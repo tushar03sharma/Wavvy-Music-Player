@@ -1,0 +1,21 @@
+{
+  "name": "wavvy",
+  "version": "1.0.0",
+  "description": "Your own music player — Node.js + yt-dlp",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server-production.js",
+    "dev": "node server.js",
+    "start:prod": "NODE_ENV=production node server-production.js",
+    "test": "bash test-sources.sh"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^2.7.0",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
