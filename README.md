@@ -2,7 +2,6 @@
 
 A modern, resilient music player that works with **multiple legal music sources**.
 
-**Originally vibe-coded, now production-ready!**
 
 ## Features
 
@@ -37,7 +36,7 @@ A modern, resilient music player that works with **multiple legal music sources*
 - Local development with `yt-dlp`
 - Full-length streams
 - **Not for production** - copyright/ToS issues
-- Disabled on Vercel
+
 
 ## Quick Start
 
