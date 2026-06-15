@@ -13,7 +13,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── Music Sources (Pluggable Architecture) ──────────────────────────────────
-const youtubeEnabled = process.env.NODE_ENV === 'development';
+// IMPORTANT: YouTube is disabled in production to avoid yt-dlp dependency
+const isProduction = process.env.NODE_ENV === 'production';
+const youtubeEnabled = !isProduction && process.env.NODE_ENV === 'development';
 const youtubeModule = youtubeEnabled ? require('./lib/sources/youtube') : null;
 
 const musicSources = {
@@ -38,8 +40,8 @@ const musicSources = {
     enabled: true,
   },
 
-  // YouTube - Local only (not for Render/production)
-  youtube: {
+  // YouTube - DISABLED in production (yt-dlp not available on serverless)
+  youtube: isProduction ? null : {
     search: youtubeModule?.search,
     stream: youtubeModule?.stream,
     enabled: youtubeEnabled,
@@ -111,7 +113,7 @@ app.get('/stream', async (req, res) => {
 // ─── Route: Get available sources ──────────────────────────────────────────────
 app.get('/sources', (req, res) => {
   const available = Object.entries(musicSources)
-    .filter(([_, config]) => config.enabled)
+    .filter(([_, config]) => config !== null && config.enabled)
     .map(([name]) => name);
   
   res.json({ sources: available });
@@ -119,7 +121,7 @@ app.get('/sources', (req, res) => {
 
 // ─── Health check for deployment ──────────────────────────────────────────────
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', sources: Object.keys(musicSources).filter(s => musicSources[s].enabled) });
+  res.json({ status: 'ok', sources: Object.keys(musicSources).filter(s => musicSources[s]?.enabled) });
 });
 
 // ─── 404 Handler ──────────────────────────────────────────────────────────────
@@ -129,7 +131,7 @@ app.use((req, res) => {
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  const enabledSources = Object.keys(musicSources).filter(s => musicSources[s].enabled);
+  const enabledSources = Object.keys(musicSources).filter(s => musicSources[s]?.enabled);
   console.log(`\n🎵  Wavvy is running!`);
   console.log(`    Open → http://localhost:${PORT}`);
   console.log(`    Enabled sources: ${enabledSources.join(', ') || 'NONE'}`);
