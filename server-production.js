@@ -13,6 +13,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── Music Sources (Pluggable Architecture) ──────────────────────────────────
+const youtubeEnabled = process.env.NODE_ENV === 'development';
+const youtubeModule = youtubeEnabled ? require('./lib/sources/youtube') : null;
+
 const musicSources = {
   // Spotify - Legal, OAuth-based (requires setup)
   spotify: {
@@ -35,11 +38,11 @@ const musicSources = {
     enabled: true,
   },
 
-  // YouTube - Local only (not for Vercel/production)
+  // YouTube - Local only (not for Render/production)
   youtube: {
-    search: require('./lib/sources/youtube').search,
-    stream: require('./lib/sources/youtube').stream,
-    enabled: process.env.NODE_ENV === 'development',
+    search: youtubeModule?.search,
+    stream: youtubeModule?.stream,
+    enabled: youtubeEnabled,
   },
 };
 
