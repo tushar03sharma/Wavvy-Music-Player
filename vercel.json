@@ -1,0 +1,32 @@
+{
+  "buildCommand": "npm install",
+  "outputDirectory": ".",
+  "functions": {
+    "server-production.js": {
+      "maxDuration": 60
+    }
+  },
+  "env": [
+    {
+      "key": "NODE_ENV",
+      "value": "production"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=60"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/server-production.js"
+    }
+  ]
+}
